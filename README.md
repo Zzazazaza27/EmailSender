@@ -75,6 +75,27 @@ python3 polza_test.py telegram-send --file message.txt --bot-token "..." --chat-
 
 `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
 
+## Запуск всего одним вызовом (email + Telegram)
+
+```bash
+python3 polza_test.py all \
+  --emails-input emails.txt \
+  --message-file message.txt \
+  --bot-token "..." \
+  --chat-id "..."
+```
+
+Если нужно только проверить связность без отправки сообщения в Telegram:
+
+```bash
+python3 polza_test.py all \
+  --emails-input emails.txt \
+  --message-file message.txt \
+  --bot-token "..." \
+  --chat-id "..." \
+  --dry-run
+```
+
 ## 3) Архитектура + блиц
 
 См. `ARCHITECTURE_AND_AI_STACK.md` (архитектура) и `AI_STACK.md` (блиц).

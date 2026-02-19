@@ -295,6 +295,30 @@ def cmd_telegram_send(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_all(args: argparse.Namespace) -> int:
+    email_args = argparse.Namespace(
+        input=args.emails_input,
+        dns_timeout=args.dns_timeout,
+        smtp_timeout=args.smtp_timeout,
+        no_smtp=args.no_smtp,
+        helo_host=args.helo_host,
+        mail_from=args.mail_from,
+        sleep=args.sleep,
+    )
+    code_email = cmd_email_check(email_args)
+    if code_email != 0:
+        return code_email
+
+    tg_args = argparse.Namespace(
+        file=args.message_file,
+        bot_token=args.bot_token,
+        chat_id=args.chat_id,
+        timeout=args.timeout,
+        dry_run=args.dry_run,
+    )
+    return cmd_telegram_send(tg_args)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Polza test: email domain/MX/SMTP + telegram send")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -316,6 +340,21 @@ def main() -> int:
     p_tg.add_argument("--timeout", type=float, default=10.0)
     p_tg.add_argument("--dry-run", action="store_true", help="Do not send; only print preview")
     p_tg.set_defaults(func=cmd_telegram_send)
+
+    p_all = sub.add_parser("all", help="Run email-check and telegram-send sequentially")
+    p_all.add_argument("--emails-input", required=True, help="Path to a text file with emails (one per line)")
+    p_all.add_argument("--dns-timeout", type=float, default=4.0)
+    p_all.add_argument("--smtp-timeout", type=float, default=6.0)
+    p_all.add_argument("--no-smtp", action="store_true", help="Skip SMTP handshake step")
+    p_all.add_argument("--helo-host", default="localhost")
+    p_all.add_argument("--mail-from", default="no-reply@example.com")
+    p_all.add_argument("--sleep", type=float, default=0.0, help="Sleep between checks (seconds)")
+    p_all.add_argument("--message-file", required=True, help="Path to .txt file")
+    p_all.add_argument("--bot-token", default="", help="Telegram bot token (or set TELEGRAM_BOT_TOKEN env var)")
+    p_all.add_argument("--chat-id", default="", help="Target chat_id (or set TELEGRAM_CHAT_ID env var)")
+    p_all.add_argument("--timeout", type=float, default=10.0)
+    p_all.add_argument("--dry-run", action="store_true", help="Do not send; only print preview")
+    p_all.set_defaults(func=cmd_all)
 
     args = parser.parse_args()
     return int(args.func(args))
