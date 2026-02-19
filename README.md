@@ -20,14 +20,14 @@ pip3 install -r requirements.txt
 ### Запуск
 
 ```bash
-python3 email_domain_check.py --input emails.txt
+python3 polza_test.py email-check --input emails.txt
 ```
 
 Опционально:
 
 ```bash
-python3 email_domain_check.py --input emails.txt --sleep 0.2
-python3 email_domain_check.py --input emails.txt --no-smtp
+python3 polza_test.py email-check --input emails.txt --sleep 0.2
+python3 polza_test.py email-check --input emails.txt --no-smtp
 ```
 
 Вывод (по строке на email):
@@ -53,19 +53,19 @@ python3 email_domain_check.py --input emails.txt --no-smtp
 ```bash
 export TELEGRAM_BOT_TOKEN="..."
 export TELEGRAM_CHAT_ID="..."
-python3 telegram_send_text.py --file message.txt
+python3 polza_test.py telegram-send --file message.txt
 ```
 
 Вариант 2 (флагами):
 
 ```bash
-python3 telegram_send_text.py --file message.txt --bot-token "..." --chat-id "..."
+python3 polza_test.py telegram-send --file message.txt --bot-token "..." --chat-id "..."
 ```
 
 ### Тестовый режим (без отправки)
 
 ```bash
-python3 telegram_send_text.py --file message.txt --bot-token "..." --chat-id "..." --dry-run
+python3 polza_test.py telegram-send --file message.txt --bot-token "..." --chat-id "..." --dry-run
 ```
 
 ### Как быстро получить chat_id (проверка работоспособности бота)
